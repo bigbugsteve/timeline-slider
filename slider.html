@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./style.css" />
+        
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <div class="container">
+            <div class="timeline-header">
+                <h3 class="timeline-header-title">
+                    Notre Histoire
+                </h3>
+                <div class="controls">
+                    <button class="toggle" data-toggle="prev"><-</i></button>
+                    <button class="toggle" data-toggle="next">-></i></button>
+                </div>
+            </div>
+            <div class="wrap">
+                <ul class="carousel is-set">
+                    <li class="carousel-seat">
+                        <h2 class="year">2020</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat">
+                        <h2 class="year">2019</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat">
+                        <h2 class="year">2014</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat">
+                        <h2 class="year">2012</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat">
+                        <h2 class="year">2009</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat">
+                        <h2 class="year">2008</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat is-ref">
+                        <h2 class="year">2004</h2>
+                        <span class="circle"></span>
+                    </li>
+                </ul>
+            </div>
+            <ul class="timeline-box-list">
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        Rebranding des activités SAV en Save
+                    </h3>
+                    <p class="timeline-text">
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        Lorem Ipsum is simply dummy text
+                    </h3>
+                    <p class="timeline-text">
+                        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look 
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        It is a long established fact that
+                    </h3>
+                    <p class="timeline-text">
+                        Avec 300 magasins de proximité et 8 centres en centralisation, Save est spécialisé dans la réparation, le reconditionnement et le recyclage de produits.
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        Contrary to popular belief, Lorem Ipsum is not simply
+                    </h3>
+                    <p class="timeline-text">
+                        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        There are many variations of passages
+                    </h3>
+                    <p class="timeline-text">
+                        All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        There are many variations of passages
+                    </h3>
+                    <p class="timeline-text">
+                        All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                    </p>
+                </li>
+                <li class="timeline-box">
+                    <h3 class="timeline-box-title">
+                        There are many variations of passages
+                    </h3>
+                    <p class="timeline-text">
+                        All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
+                    </p>
+                </li>
+
+                <div class="box-navigation">
+                    <div class="details-btn"><span></span> Détails</div>
+                    <div class="tout"><span></span> Tout afficher</div>
+                </div>
+            </ul>
+        </div>
+        
+
+        <script>
+            // http://madewithenvy.com/ecosystem/articles/2015/exploring-order-flexbox-carousel/
+            let $activeIndex = 0;
+        const $carousel = document.querySelector('.carousel');
+        const $seats = document.querySelectorAll('.carousel-seat');
+        const $seatsArray = Array.from($seats)
+        const $toggle = document.querySelectorAll('.toggle');
+        const $timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
+        
+        $seatsArray[$activeIndex].classList.add('active')
+        $timelineBoxList[$activeIndex].classList.add('active')
+
+        document.addEventListener("click", delegate(toggleFilter, toggleHandler));
+
+        // Common helper for event delegation.
+        function delegate(criteria, listener) {
+        return function(e) {
+            const el = e.target;
+            do {
+            if (!criteria(el)) {
+                continue;
+            }
+            e.delegateTarget = el;
+            listener.call(this, e);
+            return;
+            } while ((el = el.parentNode));
+        };
+        }
+
+        // Custom filter to check for required DOM elements
+        function toggleFilter(elem) {
+        return (elem instanceof HTMLElement) && elem.matches(".toggle");
+        // OR
+        // For < IE9
+        // return elem.classList && elem.classList.contains('btn');
+        }
+        function showTimelineBox(oldIndex, newIndex) {
+            $timelineBoxList[oldIndex].classList.remove('active')
+            $timelineBoxList[newIndex].classList.add('active')
+        }
+        // Custom event handler function
+        function toggleHandler(e) {
+            let $prevActiveIndex = $activeIndex
+            var $newSeat;
+            const $el = document.querySelector('.is-ref');
+            const $currSliderControl = e.delegateTarget;
+            // Info: e.target is what triggers the event dispatcher to trigger and e.currentTarget is what you assigned your listener to.
+            
+            $el.classList.remove('is-ref');
+            if ($currSliderControl.getAttribute('data-toggle') === 'next') {
+                $seatsArray[$prevActiveIndex].classList.remove('active')
+                $newActiveIndex = $prevActiveIndex + 1
+                $activeIndex = $newActiveIndex
+                $seatsArray[$newActiveIndex].classList.add('active')
+                $newSeat = next($el);
+                $carousel.classList.remove('is-reversing');
+                showTimelineBox($prevActiveIndex, $newActiveIndex)
+                
+            } else {
+                $seatsArray[$prevActiveIndex].classList.remove('active')
+                $newActiveIndex = $prevActiveIndex >= 1 ? $prevActiveIndex - 1 : 0
+                $activeIndex = $newActiveIndex
+                $seatsArray[$newActiveIndex].classList.add('active')
+                $newSeat = prev($el);
+                $carousel.classList.add('is-reversing');
+                showTimelineBox($prevActiveIndex, $newActiveIndex)
+            }
+            
+            $newSeat.classList.add('is-ref');
+            $newSeat.style.order = 1;
+            for (var i = 2; i <= $seats.length; i++) {
+                $newSeat = next($newSeat);
+                $newSeat.style.order = i;
+            }
+
+            $carousel.classList.remove('is-set');
+            return setTimeout(function() {
+                return $carousel.classList.add('is-set');
+            }, 50);
+            
+            function next($el) {
+                if ($el.nextElementSibling) {
+                return $el.nextElementSibling;
+                } else {
+                return $carousel.firstElementChild;
+                }
+            }
+
+            function prev($el) {
+                if ($el.previousElementSibling) {
+                return $el.previousElementSibling;
+                } else {
+                return $carousel.firstElementChild;
+                }
+            }
+            }
+        </script>
+    </body>
+</html>
