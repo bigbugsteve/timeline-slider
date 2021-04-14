@@ -18,14 +18,14 @@ ul, li {
     border-top: 1px solid #38383833;
     margin: 2rem 0;
 }
-.box-navigation .tout {
+.box-navigation .show-all-btn {
     color: #38383833;
     transition: all .2s ease-in-out;
 }
-.box-navigation .tout:hover {
+.box-navigation .show-all-btn:hover {
     color: #383838;
 }
-.box-navigation .tout:hover span{
+.box-navigation .show-all-btn:hover span{
     border-color: #383838;
 }
 .box-navigation > div {
@@ -49,14 +49,14 @@ ul, li {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-.box-navigation > .tout {
+.box-navigation > .show-all-btn {
     color: #38383833;
 }
-.box-navigation > .tout > span {
+.box-navigation > .show-all-btn > span {
     border-color: #38383833;
     transition: all .2s ease-in-out;
 }
-.box-navigation > .tout > span::before {
+.box-navigation > .show-all-btn > span::before {
     content: '';
     width: 3px;
     height: 3px;
@@ -67,7 +67,7 @@ ul, li {
     left: 30%;
     background-color: #38383833;
 }
-.box-navigation > .tout > span::after {
+.box-navigation > .show-all-btn > span::after {
     content: '';
     width: 3px;
     height: 3px;

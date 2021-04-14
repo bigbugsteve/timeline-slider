@@ -20,12 +20,12 @@
                     Notre Histoire
                 </h3>
                 <div class="controls">
-                    <button class="toggle" data-toggle="prev"><-</i></button>
-                    <button class="toggle" data-toggle="next">-></i></button>
+                    <button class="toggle prev-btn" disabled data-toggle="prev"><-</i></button>
+                    <button class="toggle next-btn" data-toggle="next">-></i></button>
                 </div>
             </div>
             <div class="wrap">
-                <ul class="carousel is-set">
+                <ul class="carousel is-set carousel-detailed">
                     <li class="carousel-seat">
                         <h2 class="year">2020</h2>
                         <span class="circle"></span>
@@ -124,100 +124,128 @@
 
         <script>
             // http://madewithenvy.com/ecosystem/articles/2015/exploring-order-flexbox-carousel/
-            let $activeIndex = 0;
-        const $carousel = document.querySelector('.carousel');
-        const $seats = document.querySelectorAll('.carousel-seat');
-        const $seatsArray = Array.from($seats)
-        const $toggle = document.querySelectorAll('.toggle');
-        const $timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
-        
-        $seatsArray[$activeIndex].classList.add('active')
-        $timelineBoxList[$activeIndex].classList.add('active')
 
-        document.addEventListener("click", delegate(toggleFilter, toggleHandler));
+            let activeIndex = 0;                                            // Starts from 0
+            const carouselDetailed = document.querySelector('.carousel-detailed');
+            const seats = document.querySelectorAll('.carousel-seat');
+            const boxNavigation = document.querySelector('.box-navigation')
+            const seatsArray = Array.from(seats)
+            const toggle = document.querySelectorAll('.toggle');
+            const timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
+            seatsArray[activeIndex].classList.add('active')                 // Set active on current year
+            timelineBoxList[activeIndex].classList.add('active')            // Show the description that belongs to the active year
+            let isDetailView = false
+            document.addEventListener("click", delegate(toggleFilter, toggleHandler));
+            if(isDetailView) {
 
-        // Common helper for event delegation.
-        function delegate(criteria, listener) {
-        return function(e) {
-            const el = e.target;
-            do {
-            if (!criteria(el)) {
-                continue;
             }
-            e.delegateTarget = el;
-            listener.call(this, e);
-            return;
-            } while ((el = el.parentNode));
-        };
-        }
+            // Common helper for event delegation.
+            function delegate(criteria, listener) {
+                return function(e) {
+                    const el = e.target;
+                    do {
+                    if (!criteria(el)) {
+                        continue;
+                    }
+                    e.delegateTarget = el;
+                    listener.call(this, e);
+                    return;
+                    } while ((el = el.parentNode));
+                };
+            }
 
-        // Custom filter to check for required DOM elements
-        function toggleFilter(elem) {
-        return (elem instanceof HTMLElement) && elem.matches(".toggle");
-        // OR
-        // For < IE9
-        // return elem.classList && elem.classList.contains('btn');
-        }
-        function showTimelineBox(oldIndex, newIndex) {
-            $timelineBoxList[oldIndex].classList.remove('active')
-            $timelineBoxList[newIndex].classList.add('active')
-        }
-        // Custom event handler function
-        function toggleHandler(e) {
-            let $prevActiveIndex = $activeIndex
-            var $newSeat;
-            const $el = document.querySelector('.is-ref');
-            const $currSliderControl = e.delegateTarget;
-            // Info: e.target is what triggers the event dispatcher to trigger and e.currentTarget is what you assigned your listener to.
-            
-            $el.classList.remove('is-ref');
-            if ($currSliderControl.getAttribute('data-toggle') === 'next') {
-                $seatsArray[$prevActiveIndex].classList.remove('active')
-                $newActiveIndex = $prevActiveIndex + 1
-                $activeIndex = $newActiveIndex
-                $seatsArray[$newActiveIndex].classList.add('active')
-                $newSeat = next($el);
-                $carousel.classList.remove('is-reversing');
-                showTimelineBox($prevActiveIndex, $newActiveIndex)
+            // Custom filter to check for required DOM elements
+            function toggleFilter(elem) {
+                return (elem instanceof HTMLElement) && elem.matches(".toggle");
+                // OR
+                // For < IE9
+                // return elem.classList && elem.classList.contains('btn');
+            }
+
+            // Show description for each year based on array's index
+            function showTimelineBox(oldIndex, newIndex) {
+                timelineBoxList[oldIndex].classList.remove('active')
+                timelineBoxList[newIndex].classList.add('active')
+            }
+
+            // Custom event handler function
+            function toggleHandler(e) {
+                let prevActiveIndex = activeIndex                   // Get the old index
+                var newSeat;
+                const el = document.querySelector('.is-ref');
+                const currSliderControl = e.delegateTarget;
+                const prevBtn = document.querySelector('.prev-btn')
+                const nextBtn = document.querySelector('.next-btn')
+                // Info: e.target is what triggers the event dispatcher to trigger and e.currentTarget is what you assigned your listener to.
+                el.classList.remove('is-ref');
                 
-            } else {
-                $seatsArray[$prevActiveIndex].classList.remove('active')
-                $newActiveIndex = $prevActiveIndex >= 1 ? $prevActiveIndex - 1 : 0
-                $activeIndex = $newActiveIndex
-                $seatsArray[$newActiveIndex].classList.add('active')
-                $newSeat = prev($el);
-                $carousel.classList.add('is-reversing');
-                showTimelineBox($prevActiveIndex, $newActiveIndex)
-            }
-            
-            $newSeat.classList.add('is-ref');
-            $newSeat.style.order = 1;
-            for (var i = 2; i <= $seats.length; i++) {
-                $newSeat = next($newSeat);
-                $newSeat.style.order = i;
-            }
+                function toggleNext () {
+                    prevBtn.disabled = false
+                    seatsArray[prevActiveIndex].classList.remove('active')
+                    newActiveIndex = prevActiveIndex + 1                        // Calculate new index
+                    activeIndex = newActiveIndex                                // Set new index
+                    seatsArray[newActiveIndex].classList.add('active')
+                    newSeat = next(el);
+                    carouselDetailed.classList.remove('is-reversing');
+                    showTimelineBox(prevActiveIndex, newActiveIndex)
+                }
+                
+                function togglePrev () {
+                    seatsArray[prevActiveIndex].classList.remove('active')
+                    newActiveIndex = prevActiveIndex >= 1 ? prevActiveIndex - 1 : 0
+                    activeIndex = newActiveIndex
+                    seatsArray[newActiveIndex].classList.add('active')
+                    newSeat = prev(el);
+                    carouselDetailed.classList.add('is-reversing');
+                    showTimelineBox(prevActiveIndex, newActiveIndex)
+                }
 
-            $carousel.classList.remove('is-set');
-            return setTimeout(function() {
-                return $carousel.classList.add('is-set');
-            }, 50);
-            
-            function next($el) {
-                if ($el.nextElementSibling) {
-                return $el.nextElementSibling;
-                } else {
-                return $carousel.firstElementChild;
+                // Disable Arrow button
+                if (prevActiveIndex - 1 === 0) {
+                    prevBtn.disabled = true
+                    nextBtn.disabled = false
+                } else if (prevActiveIndex + 2 === seatsArray.length) {
+                    nextBtn.disabled = true
+                    prevBtn.disabled = false
+                }
+
+                // Handle Next/Previous button
+                if (currSliderControl.getAttribute('data-toggle') === 'next') {
+                    toggleNext()
+                } else if(currSliderControl.getAttribute('data-toggle') === 'prev'){
+                    togglePrev()
+                }
+                
+                newSeat.classList.add('is-ref');
+                newSeat.style.order = 1;
+
+                for (var i = 2; i <= seats.length; i++) {
+                    newSeat = next(newSeat);
+                    newSeat.style.order = i;
+                }
+                
+                carouselDetailed.classList.remove('is-set');
+                return setTimeout(function() {
+                    return carouselDetailed.classList.add('is-set');
+                }, 50);
+                
+                function next(el) {
+                    if (el.nextElementSibling) {
+                        return el.nextElementSibling;
+                    } else {
+                        return carouselDetailed.firstElementChild;
+                    }
+                }
+                
+                function prev(el) {
+                    if (el.previousElementSibling) {
+                        return el.previousElementSibling;
+                    } else {
+                        return carouselDetailed.lastElementChild;
+                    }
                 }
             }
 
-            function prev($el) {
-                if ($el.previousElementSibling) {
-                return $el.previousElementSibling;
-                } else {
-                return $carousel.firstElementChild;
-                }
-            }
-            }
         </script>
     </body>
 </html>
