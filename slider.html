@@ -164,25 +164,38 @@
             const carouselDetailed = document.querySelector('.carousel-detailed');
             const carouselAllDisplayed = document.querySelector('.carousel-all-displayed');
             const timelineTexts = Array.from(document.querySelectorAll('.timeline-text'))
-            const showAllBtn = document.querySelector('.show-all-btn')
-            const detailBtn = document.querySelector('.details-btn')
-            const seats = document.querySelectorAll('.carousel-seat');
-            const seatOfShowAllView = Array.from(document.querySelectorAll('.carousel-seat-all'));
+            const seats = document.querySelectorAll('.carousel-seat');                              // Detail Year timeline
+            const seatOfShowAllView = Array.from(document.querySelectorAll('.carousel-seat-all'));  // ShowAll Year timeline
+            const timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))          // Timeline Boxes (descr.)
             const boxNavigation = document.querySelector('.box-navigation')
             const seatsArray = Array.from(seats)
             const toggle = document.querySelectorAll('.toggle');
-            const timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
-
+            const showAllBtn = document.querySelector('.show-all-btn')      // Show All Button
+            const detailBtn = document.querySelector('.details-btn')        // Details Button
+            const prevBtn = document.querySelector('.prev-btn')             // Previous Button
+            const nextBtn = document.querySelector('.next-btn')             // Next Button
+            
             seatsArray[activeIndex].classList.add('active')                 // Set active on current year || detailed
             seatOfShowAllView[activeIndex].classList.add('active')          // Set active on current year || show all
             timelineBoxList[activeIndex].classList.add('active')            // Show the description that belongs to the active year
 
+            // Array
+            let timelineIndexArray = []                                     // Create array to find index of clicked timeline elemnt
+            seatOfShowAllView.map((item, index) => {                        // Map through and pick the text
+                timelineIndexArray.push(item.firstElementChild.innerText)
+            })
+
             // Event listeners
             document.addEventListener("click", delegate(toggleFilter, toggleHandler));
             // Show all view of timeline
+
             seatOfShowAllView.forEach(item => {
                 item.addEventListener('click', function (e) {
-                    console.log('e', e)
+                    let oldIndex = activeIndex  
+                    let clickedText = e.target.innerText
+                    let index = timelineIndexArray.indexOf(clickedText)
+                    activeIndex = index
+                    clientClickedOnYear(activeIndex)
                 })
             })
             showAllBtn.addEventListener("click", function () {
@@ -207,6 +220,59 @@
                 })
             })
             
+            // Client clicked on year
+            function clientClickedOnYear(clickedIndex) {
+                // Clear active classes from all timeline item
+                let newSeat
+                seatsArray.forEach((item, index) => {               // Detailed
+                    item.classList.remove('active')
+                    item.classList.remove('is-ref')
+                    if(index === clickedIndex) {                    // Set active to clicked element
+                        item.classList.add('active')
+                        if(item.previousElementSibling) {
+                            newSeat = item.previousElementSibling
+                            // console.log(index.previousElementSibling)
+                            newSeat.classList.add('is-ref')
+                        }
+                    }
+                })
+                seatOfShowAllView.forEach((item, index) => {        // Show all view
+                    item.classList.remove('active')
+                    if(index === clickedIndex) {                    // Set active to clicked element
+                        item.classList.add('active')
+                    }
+                })
+                timelineBoxList.forEach((item, index) => {          // Show all view
+                    item.classList.remove('active')
+                    if(index === clickedIndex) {                    // Set active to clicked element
+                        item.classList.add('active')
+                    }
+                })
+
+                newSeat.classList.add('is-ref');
+                newSeat.style.order = 1;
+
+                for (var i = 2; i <= seats.length; i++) {
+                    newSeat = next(newSeat);
+                    newSeat.style.order = i;
+                }
+
+                function next(el) {
+                    if (el.nextElementSibling) {
+                        return el.nextElementSibling;
+                    } else {
+                        return carouselDetailed.firstElementChild;
+                    }
+                }
+                
+                function prev(el) {
+                    if (el.previousElementSibling) {
+                        return el.previousElementSibling;
+                    } else {
+                        return carouselDetailed.lastElementChild;
+                    }
+                }
+            }
             // Common helper for event delegation.
             function delegate(criteria, listener) {
                 return function(e) {
@@ -235,18 +301,17 @@
                 timelineBoxList[oldIndex].classList.remove('active')
                 timelineBoxList[newIndex].classList.add('active')
             }
-
+            
             // Custom event handler function
             function toggleHandler(e) {
                 let prevActiveIndex = activeIndex                   // Get the old index
                 var newSeat;
                 const el = document.querySelector('.is-ref');
                 const currSliderControl = e.delegateTarget;
-                const prevBtn = document.querySelector('.prev-btn')
-                const nextBtn = document.querySelector('.next-btn')
                 // Info: e.target is what triggers the event dispatcher to trigger and e.currentTarget is what you assigned your listener to.
                 el.classList.remove('is-ref');
                 
+                // Next
                 function toggleNext () {
                     prevBtn.disabled = false
                     seatsArray[prevActiveIndex].classList.remove('active')
@@ -260,7 +325,7 @@
                     carouselDetailed.classList.remove('is-reversing');
                     showTimelineBox(prevActiveIndex, newActiveIndex)
                 }
-                
+                // Previous
                 function togglePrev () {
                     seatsArray[prevActiveIndex].classList.remove('active')
                     seatOfShowAllView[prevActiveIndex].classList.remove('active')
@@ -278,7 +343,6 @@
                     nextBtn.disabled = false
                     prevBtn.disabled = true
                 } else if (prevActiveIndex + 2 === seatsArray.length) {
-                    console.log('prevActiveIndex +2 ', prevActiveIndex +2)
                     nextBtn.disabled = true
                     prevBtn.disabled = false
                 } else {
