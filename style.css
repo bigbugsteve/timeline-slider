@@ -98,6 +98,9 @@ ul, li {
 .timeline-text {
     color: #727279
 }
+.timeline-text.hide {
+    display: none;
+}
 .timeline-header {
     display: flex;
     justify-content: space-between;
@@ -120,7 +123,7 @@ ul, li {
     overflow: hidden;
     position: relative;
 }
-.wrap::after, .wrap::before {
+.wrap-detailed::after, .wrap-detailed::before {
     content: '';
     height: 5px;
     /* background-color: gray; */
@@ -129,18 +132,18 @@ ul, li {
     bottom: 17.5px;
     left: 0;
 }
-.wrap::before {
+.wrap-detailed::before {
     width: 33%;
     z-index: 2;
     background: #2c5cd3;
 }
-.wrap::after {
+.wrap-detailed::after {
     background-color: gray;
     width: 100%;
     z-index: 1;
 }
 
-span.circle {
+.carousel-seat span.circle {
     z-index: 3;
     content: '';
     position: absolute;
@@ -153,6 +156,47 @@ span.circle {
     background: gray;
     transition: background .6s ease-in-out;
     transition-delay: background .4s;
+}
+.carousel-seat-all .year{
+    font-size: 1rem;
+}
+.carousel-all-displayed.hide {
+    display: none;
+}
+.carousel-all-displayed {
+    padding: 0;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+.carousel-all-displayed::after {
+    content: '';
+    width: 100%;
+    height: 3px;
+    position: absolute;
+    bottom: 0;
+    left: 3px;
+    background-color: gray;
+}
+.carousel-seat-all {
+    position: relative;
+}
+.carousel-seat-all .circle {
+    z-index: 3;
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3.5px;
+    border-radius: 50%;
+    /* transform: translateX(-50%); */
+    width: 10px;
+    height: 10px;
+    background: gray;
+    transition: background .6s ease-in-out;
+    transition-delay: background .4s;
+}
+.carousel-detailed.hide {
+    display: none;
 }
 
 .carousel-seat .year {

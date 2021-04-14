@@ -24,7 +24,39 @@
                     <button class="toggle next-btn" data-toggle="next">-></i></button>
                 </div>
             </div>
-            <div class="wrap">
+            <ul class="carousel-all-displayed hide">
+                <li class="carousel-seat-all">
+                    <h2 class="year">2020</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2019</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2014</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2012</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2009</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2008</h2>
+                    <span class="circle"></span>
+                </li>
+                <li class="carousel-seat-all">
+                    <h2 class="year">2004</h2>
+                    <span class="circle"></span>
+                </li>
+            </ul>
+            <div class="wrap wrap-detailed">
+                
+
                 <ul class="carousel is-set carousel-detailed">
                     <li class="carousel-seat">
                         <h2 class="year">2020</h2>
@@ -91,7 +123,7 @@
                 </li>
                 <li class="timeline-box">
                     <h3 class="timeline-box-title">
-                        There are many variations of passages
+                        There are many variations of passages2
                     </h3>
                     <p class="timeline-text">
                         All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
@@ -99,7 +131,7 @@
                 </li>
                 <li class="timeline-box">
                     <h3 class="timeline-box-title">
-                        There are many variations of passages
+                        There are many variations of passages43
                     </h3>
                     <p class="timeline-text">
                         All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
@@ -107,7 +139,7 @@
                 </li>
                 <li class="timeline-box">
                     <h3 class="timeline-box-title">
-                        There are many variations of passages
+                        There are many variations of passages23423
                     </h3>
                     <p class="timeline-text">
                         All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.
@@ -116,7 +148,7 @@
 
                 <div class="box-navigation">
                     <div class="details-btn"><span></span> Détails</div>
-                    <div class="tout"><span></span> Tout afficher</div>
+                    <div class="tout show-all-btn"><span></span> Tout afficher</div>
                 </div>
             </ul>
         </div>
@@ -127,6 +159,10 @@
 
             let activeIndex = 0;                                            // Starts from 0
             const carouselDetailed = document.querySelector('.carousel-detailed');
+            const carouselAllDisplayed = document.querySelector('.carousel-all-displayed');
+            const timelineTexts = Array.from(document.querySelectorAll('.timeline-text'))
+            const showAllBtn = document.querySelector('.show-all-btn')
+            const detailBtn = document.querySelector('.details-btn')
             const seats = document.querySelectorAll('.carousel-seat');
             const boxNavigation = document.querySelector('.box-navigation')
             const seatsArray = Array.from(seats)
@@ -134,11 +170,24 @@
             const timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
             seatsArray[activeIndex].classList.add('active')                 // Set active on current year
             timelineBoxList[activeIndex].classList.add('active')            // Show the description that belongs to the active year
-            let isDetailView = false
             document.addEventListener("click", delegate(toggleFilter, toggleHandler));
-            if(isDetailView) {
 
-            }
+            showAllBtn.addEventListener("click", function () {
+                carouselAllDisplayed.classList.remove('hide')
+                carouselDetailed.classList.add('hide')
+                timelineTexts.forEach((text)=> {
+                    text.classList.add('hide')
+                })
+            })
+            detailBtn.addEventListener("click", function () {
+                carouselAllDisplayed.classList.add('hide')
+                carouselDetailed.classList.remove('hide')
+                timelineTexts.forEach((text)=> {
+                    text.classList.remove('hide')
+                })
+            })
+
+            
             // Common helper for event delegation.
             function delegate(criteria, listener) {
                 return function(e) {
