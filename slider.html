@@ -24,39 +24,41 @@
                     <button class="toggle next-btn" data-toggle="next">-></i></button>
                 </div>
             </div>
-            <ul class="carousel-all-displayed hide">
-                <li class="carousel-seat-all">
-                    <h2 class="year">2020</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2019</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2014</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2012</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2009</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2008</h2>
-                    <span class="circle"></span>
-                </li>
-                <li class="carousel-seat-all">
-                    <h2 class="year">2004</h2>
-                    <span class="circle"></span>
-                </li>
-            </ul>
-            <div class="wrap wrap-detailed">
-                
+            <div class="wrap">
 
+                <ul class="carousel-all-displayed hide">
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2020</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2019</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2014</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2012</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2009</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2008</h2>
+                        <span class="circle"></span>
+                    </li>
+                    <li class="carousel-seat-all">
+                        <h2 class="year">2004</h2>
+                        <span class="circle"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="wrap wrap-detailed">
                 <ul class="carousel is-set carousel-detailed">
                     <li class="carousel-seat">
                         <h2 class="year">2020</h2>
@@ -147,7 +149,7 @@
                 </li>
 
                 <div class="box-navigation">
-                    <div class="details-btn"><span></span> Détails</div>
+                    <div class="details-btn active"><span></span> Détails</div>
                     <div class="tout show-all-btn"><span></span> Tout afficher</div>
                 </div>
             </ul>
@@ -157,6 +159,7 @@
         <script>
             // http://madewithenvy.com/ecosystem/articles/2015/exploring-order-flexbox-carousel/
 
+            // Variables
             let activeIndex = 0;                                            // Starts from 0
             const carouselDetailed = document.querySelector('.carousel-detailed');
             const carouselAllDisplayed = document.querySelector('.carousel-all-displayed');
@@ -164,29 +167,45 @@
             const showAllBtn = document.querySelector('.show-all-btn')
             const detailBtn = document.querySelector('.details-btn')
             const seats = document.querySelectorAll('.carousel-seat');
+            const seatOfShowAllView = Array.from(document.querySelectorAll('.carousel-seat-all'));
             const boxNavigation = document.querySelector('.box-navigation')
             const seatsArray = Array.from(seats)
             const toggle = document.querySelectorAll('.toggle');
             const timelineBoxList = Array.from(document.querySelectorAll('.timeline-box'))
-            seatsArray[activeIndex].classList.add('active')                 // Set active on current year
-            timelineBoxList[activeIndex].classList.add('active')            // Show the description that belongs to the active year
-            document.addEventListener("click", delegate(toggleFilter, toggleHandler));
 
+            seatsArray[activeIndex].classList.add('active')                 // Set active on current year || detailed
+            seatOfShowAllView[activeIndex].classList.add('active')          // Set active on current year || show all
+            timelineBoxList[activeIndex].classList.add('active')            // Show the description that belongs to the active year
+
+            // Event listeners
+            document.addEventListener("click", delegate(toggleFilter, toggleHandler));
+            // Show all view of timeline
+            seatOfShowAllView.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    console.log('e', e)
+                })
+            })
             showAllBtn.addEventListener("click", function () {
+                showAllBtn.classList.add('active')
+                detailBtn.classList.remove('active')
                 carouselAllDisplayed.classList.remove('hide')
                 carouselDetailed.classList.add('hide')
                 timelineTexts.forEach((text)=> {
                     text.classList.add('hide')
                 })
             })
+
+            
+            // Detailed view of timeline
             detailBtn.addEventListener("click", function () {
+                detailBtn.classList.add('active')
+                showAllBtn.classList.remove('active')
                 carouselAllDisplayed.classList.add('hide')
                 carouselDetailed.classList.remove('hide')
                 timelineTexts.forEach((text)=> {
                     text.classList.remove('hide')
                 })
             })
-
             
             // Common helper for event delegation.
             function delegate(criteria, listener) {
@@ -231,9 +250,12 @@
                 function toggleNext () {
                     prevBtn.disabled = false
                     seatsArray[prevActiveIndex].classList.remove('active')
+                    seatOfShowAllView[prevActiveIndex].classList.remove('active')
                     newActiveIndex = prevActiveIndex + 1                        // Calculate new index
                     activeIndex = newActiveIndex                                // Set new index
                     seatsArray[newActiveIndex].classList.add('active')
+                    seatOfShowAllView[newActiveIndex].classList.add('active')
+                    
                     newSeat = next(el);
                     carouselDetailed.classList.remove('is-reversing');
                     showTimelineBox(prevActiveIndex, newActiveIndex)
@@ -241,9 +263,11 @@
                 
                 function togglePrev () {
                     seatsArray[prevActiveIndex].classList.remove('active')
+                    seatOfShowAllView[prevActiveIndex].classList.remove('active')
                     newActiveIndex = prevActiveIndex >= 1 ? prevActiveIndex - 1 : 0
                     activeIndex = newActiveIndex
                     seatsArray[newActiveIndex].classList.add('active')
+                    seatOfShowAllView[newActiveIndex].classList.add('active')
                     newSeat = prev(el);
                     carouselDetailed.classList.add('is-reversing');
                     showTimelineBox(prevActiveIndex, newActiveIndex)
@@ -251,11 +275,16 @@
 
                 // Disable Arrow button
                 if (prevActiveIndex - 1 === 0) {
-                    prevBtn.disabled = true
                     nextBtn.disabled = false
+                    prevBtn.disabled = true
                 } else if (prevActiveIndex + 2 === seatsArray.length) {
+                    console.log('prevActiveIndex +2 ', prevActiveIndex +2)
                     nextBtn.disabled = true
                     prevBtn.disabled = false
+                } else {
+                    nextBtn.disabled = false
+                    prevBtn.disabled = false
+
                 }
 
                 // Handle Next/Previous button
