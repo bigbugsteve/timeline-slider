@@ -182,7 +182,6 @@
             // Array
             let timelineIndexArray = []                                     // Create array to find index of clicked timeline elemnt
             seatOfShowAllView.map((item, index) => {                        // Map through and pick the text
-            console.log("🚀 ~ file: slider.html ~ line 186 ~ activeIndex", activeIndex)
                 timelineIndexArray.push(item.firstElementChild.innerText)
             })
 
@@ -224,6 +223,12 @@
             
             // Client clicked on year
             function clientClickedOnYear(clickedIndex) {
+                // ======== Handle arrows ========
+                if (clickedIndex === 0) { handlePrevBtn(true) }
+                    else if (clickedIndex === (seatsArray.length - 1)) { handleNextBtn(true) }
+                    else { handleNextBtn(false); handlePrevBtn(false) }
+                // ======== ======== ======== ======== 
+
                 // Clear active classes from all timeline item
                 let newSeat
                 seatsArray.forEach((item, index) => {               // Detailed view
@@ -241,11 +246,11 @@
                             const length = seatsArray.length
                             let lastItem = seatsArray[length-1]
                             seatsArray[length-1].classList.add('is-ref')
-                            // console.log("🚀 ~ file: slider.html ~ line 241 ~ seatsArray.forEach ~ lastItem", lastItem)
                             lastItem.style.order = 1
                         }
                     }
                 })
+                
                 seatOfShowAllView.forEach((item, index) => {        // Show all view
                     item.classList.remove('active')
                     if(index === clickedIndex) {                    // Set active to clicked element
@@ -258,21 +263,16 @@
                         item.classList.add('active')
                     }
                 })
-                console.log(clickedIndex, seatsArray.length)
+
                 if (clickedIndex === 0) {
-                    handlePrevBtn(true)
-                } else if (clickedIndex === seatsArray.length - 1 ) {
-                    handleNextBtn(true)
+                    
                 } else {
-                    handlePrevBtn(false)
-                    handleNextBtn(false)
                     newSeat.classList.add('is-ref');
                     newSeat.style.order = 1;
 
                     for (var i = 2; i <= seats.length; i++) {
                         newSeat = next(newSeat);
                         newSeat.style.order = i;
-                        console.log('newSeat', newSeat)
                     }
                     
                     function next(el) {
@@ -296,10 +296,11 @@
                 }
                 
                 if(clickedIndex === 0 ) {
-                    console.log(carouselDetailed)
                     carouselDetailed.lastElementChild.classList.add('is-ref')
                 }
             }
+
+
             // Common helper for event delegation.
             function delegate(criteria, listener) {
                 return function(e) {
@@ -329,9 +330,11 @@
                 timelineBoxList[newIndex].classList.add('active')
             }
             function handleNextBtn (value) {
+                console.log('next')
                 nextBtn.disabled = value
             }
             function handlePrevBtn (value) {
+                console.log('prev')
                 prevBtn.disabled = value
             }
             // Custom event handler function
