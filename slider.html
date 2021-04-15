@@ -224,8 +224,8 @@
             // Client clicked on year
             function clientClickedOnYear(clickedIndex) {
                 // ======== Handle arrows ========
-                if (clickedIndex === 0) { handlePrevBtn(true) }
-                    else if (clickedIndex === (seatsArray.length - 1)) { handleNextBtn(true) }
+                if (clickedIndex === 0) { handlePrevBtn(true); handleNextBtn(false) }
+                    else if (clickedIndex === (seatsArray.length - 1)) { handleNextBtn(true), handlePrevBtn(false) }
                     else { handleNextBtn(false); handlePrevBtn(false) }
                 // ======== ======== ======== ======== 
 
