@@ -229,8 +229,23 @@
                     else { handleNextBtn(false); handlePrevBtn(false) }
                 // ======== ======== ======== ======== 
 
-                // Clear active classes from all timeline item
+                // ========== Handle View ==========
+                seatOfShowAllView.forEach((item, index) => {        // Show all view
+                    item.classList.remove('active')
+                    if(index === clickedIndex) {                    // Set active to clicked element
+                        item.classList.add('active')
+                    }
+                })
+                timelineBoxList.forEach((item, index) => {          // Show all view
+                    item.classList.remove('active')
+                    if(index === clickedIndex) {                    // Set active to clicked element
+                        item.classList.add('active')
+                    }
+                })
+                // ========================================
+                
                 let newSeat
+                // Clear active classes from all timeline item. Add is-ref class
                 seatsArray.forEach((item, index) => {               // Detailed view
                     item.classList.remove('active')
                     item.classList.remove('is-ref')
@@ -250,51 +265,33 @@
                         }
                     }
                 })
-                
-                seatOfShowAllView.forEach((item, index) => {        // Show all view
-                    item.classList.remove('active')
-                    if(index === clickedIndex) {                    // Set active to clicked element
-                        item.classList.add('active')
-                    }
-                })
-                timelineBoxList.forEach((item, index) => {          // Show all view
-                    item.classList.remove('active')
-                    if(index === clickedIndex) {                    // Set active to clicked element
-                        item.classList.add('active')
-                    }
-                })
 
-                if (clickedIndex === 0) {
-                    
-                } else {
-                    newSeat.classList.add('is-ref');
-                    newSeat.style.order = 1;
+                newSeat.classList.add('is-ref');
+                newSeat.style.order = 1;
 
-                    for (var i = 2; i <= seats.length; i++) {
-                        newSeat = next(newSeat);
-                        newSeat.style.order = i;
-                    }
-                    
-                    function next(el) {
-                        if (el.nextElementSibling) {
-                            return el.nextElementSibling;
-                        } else if(clickedIndex === 0) {
-                            return carouselDetailed.lastElementChild
-                        } else {
-                            return carouselDetailed.firstElementChild;
-                        }
-                    }
-                    
-                    function prev(el) {
-                        if (el.previousElementSibling) {
-                            return el.previousElementSibling;
-                        } else {
-                            return carouselDetailed.lastElementChild;
-                        }
-                    }
-                    
+                for (var i = 2; i <= seats.length; i++) {
+                    newSeat = next(newSeat);
+                    newSeat.style.order = i;
                 }
                 
+                function next(el) {
+                    if (el.nextElementSibling) {
+                        return el.nextElementSibling;
+                    } else if(clickedIndex === 0) {
+                        return carouselDetailed.lastElementChild
+                    } else {
+                        return carouselDetailed.firstElementChild;
+                    }
+                }
+                
+                function prev(el) {
+                    if (el.previousElementSibling) {
+                        return el.previousElementSibling;
+                    } else {
+                        return carouselDetailed.lastElementChild;
+                    }
+                }
+                    
                 if(clickedIndex === 0 ) {
                     carouselDetailed.lastElementChild.classList.add('is-ref')
                 }
