@@ -258,10 +258,14 @@
                         item.classList.add('active')
                     }
                 })
-
+                console.log(clickedIndex, seatsArray.length)
                 if (clickedIndex === 0) {
-                    
+                    handlePrevBtn(true)
+                } else if (clickedIndex === seatsArray.length - 1 ) {
+                    handleNextBtn(true)
                 } else {
+                    handlePrevBtn(false)
+                    handleNextBtn(false)
                     newSeat.classList.add('is-ref');
                     newSeat.style.order = 1;
 
